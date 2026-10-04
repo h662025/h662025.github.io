@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevOps Utils Lab | Lightweight Linux Automation &amp; Server Scripts</title>
+  <meta name="description" content="Production-ready, hardened bash scripts and automated deployment toolkits for Ubuntu and Debian servers. Instant delivery, zero bloat.">
+
+  <!-- Lemon Squeezy Embed SDK -->
+  <script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
+
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #30363d;
+      --accent: #2ea043;
+      --accent-hover: #3fb950;
+      --text-main: #c9d1d9;
+      --text-bright: #f0f6fc;
+      --text-muted: #8b949e;
+      --code-bg: #0b0e14;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    body { background-color: var(--bg); color: var(--text-main); line-height: 1.6; }
+    a { color: #58a6ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header { border-bottom: 1px solid var(--border); background: var(--surface); padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; }
+    .nav-container { max-width: 1080px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .brand { font-size: 1.1rem; font-weight: 700; color: var(--text-bright); display: flex; align-items: center; gap: 0.5rem; }
+    .brand span { color: var(--accent); }
+
+    .hero { max-width: 800px; margin: 4rem auto 3rem; text-align: center; padding: 0 1.5rem; }
+    .hero h1 { font-size: 2.4rem; color: var(--text-bright); margin-bottom: 1rem; line-height: 1.25; }
+    .hero p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+    .badge { display: inline-block; background: rgba(46, 160, 67, 0.15); color: var(--accent-hover); border: 1px solid var(--accent); padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.85rem; margin-bottom: 1rem; }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 4rem; }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.8rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s; }
+    .card:hover { border-color: #58a6ff; }
+    .card h2 { font-size: 1.3rem; color: var(--text-bright); margin-bottom: 0.6rem; }
+    .card .price { font-size: 1.8rem; font-weight: 700; color: var(--text-bright); margin: 0.8rem 0; }
+    .card .price span { font-size: 0.9rem; font-weight: 400; color: var(--text-muted); }
+    .card ul { list-style: none; margin-bottom: 1.5rem; font-size: 0.95rem; }
+    .card li { margin-bottom: 0.5rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; }
+    .card li::before { content: "✓"; color: var(--accent); font-weight: bold; }
+
+    .btn { display: block; width: 100%; text-align: center; padding: 0.75rem 1rem; border-radius: 6px; font-weight: 600; cursor: pointer; border: none; font-size: 0.95rem; transition: background 0.2s; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-hover); text-decoration: none; }
+    .btn-secondary { background: #21262d; border: 1px solid var(--border); color: var(--text-bright); }
+    .btn-secondary:hover { background: #30363d; text-decoration: none; }
+
+    /* Crypto Payment Direct Box */
+    .crypto-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 2rem; margin-bottom: 4rem; }
+    .crypto-box h3 { color: var(--text-bright); margin-bottom: 0.5rem; font-size: 1.3rem; }
+    .crypto-address-bar { background: var(--code-bg); border: 1px solid var(--border); padding: 0.8rem 1rem; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-family: monospace; font-size: 0.9rem; margin-top: 1rem; word-break: break-all; }
+    .copy-btn { background: #21262d; border: 1px solid var(--border); color: var(--text-main); padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; white-space: nowrap; margin-left: 0.8rem; font-family: inherit; }
+    .copy-btn:hover { background: #30363d; color: var(--text-bright); }
+
+    /* Policy Accordions */
+    .policies { border-top: 1px solid var(--border); padding-top: 3rem; }
+    .policies h3 { color: var(--text-bright); margin-bottom: 1.5rem; }
+    details { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 1rem; padding: 1rem; }
+    summary { font-weight: 600; cursor: pointer; color: var(--text-bright); outline: none; }
+    details p { margin-top: 0.8rem; font-size: 0.9rem; color: var(--text-muted); }
+
+    footer { text-align: center; padding: 2rem; font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border); }
+    #toast { visibility: hidden; min-width: 200px; background-color: var(--accent); color: #fff; text-align: center; border-radius: 4px; padding: 0.5rem 1rem; position: fixed; z-index: 1000; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 0.85rem; }
+    #toast.show { visibility: visible; animation: fadein 0.3s, fadeout 0.3s 2s; }
+    @keyframes fadein { from { bottom: 10px; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+    @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 10px; opacity: 0; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <div class="brand"><span>&gt;_</span> DevOps Utils Lab</div>
+      <div>
+        <a href="#products" style="margin-right: 1.5rem; color: var(--text-main);">Toolkits</a>
+        <a href="#crypto" style="margin-right: 1.5rem; color: var(--text-main);">USDT Settlement</a>
+        <a href="#policies" style="color: var(--text-main);">Compliance</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="badge">Production-Ready Scripts</div>
+    <h1>Automated Server Utilities &amp; Linux Hardening Toolkits</h1>
+    <p>Battle-tested, lightweight Shell scripts and Docker automation modules tailored for Debian 11/12 and Ubuntu LTS nodes. Minimal dependencies, instant deployment.</p>
+  </section>
+
+  <div class="container">
+    <div id="products" class="grid">
+      <!-- Product 1: Linux Server Hardening -->
+      <div class="card">
+        <div>
+          <h2>Linux Server Security Baseline Toolkit</h2>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">One-click baseline security configuration for fresh VPS deployments.</p>
+          <div class="price">$12.00 <span>/ one-time</span></div>
+          <ul>
+            <li>SSH Port remapping &amp; root password disable</li>
+            <li>UFW automated firewall rules generation</li>
+            <li>Fail2ban automated intrusion deterrence</li>
+            <li>Kernel TCP BBR congestion optimization</li>
+          </ul>
+        </div>
+        <!-- Lemon Squeezy Checkout Hook -->
+        <a href="https://yourstore.lemonsqueezy.com/buy/product-uuid-1?embed=1" class="lemonsqueezy-button btn btn-primary">
+          Instant Checkout (Card / Apple Pay)
+        </a>
+      </div>
+
+      <!-- Product 2: Docker & Nginx Reverse Proxy -->
+      <div class="card">
+        <div>
+          <h2>Docker &amp; Nginx Auto-Provisioner</h2>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">Automated orchestrator for modular reverse-proxy environments.</p>
+          <div class="price">$18.00 <span>/ one-time</span></div>
+          <ul>
+            <li>Automated Docker CE &amp; Compose v2 installer</li>
+            <li>Nginx reverse proxy auto-conf generation</li>
+            <li>ZeroSSL / Let's Encrypt automated TLS renewal</li>
+            <li>Automated systemd health-check service</li>
+          </ul>
+        </div>
+        <!-- Lemon Squeezy Checkout Hook -->
+        <a href="https://yourstore.lemonsqueezy.com/buy/product-uuid-2?embed=1" class="lemonsqueezy-button btn btn-primary">
+          Instant Checkout (Card / Apple Pay)
+        </a>
+      </div>
+
+      <!-- Service 3: Custom Scripting Service -->
+      <div class="card">
+        <div>
+          <h2>Custom Automation &amp; Script Tailoring</h2>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">Custom Shell/Python pipelines, cron automation, or server migrations.</p>
+          <div class="price">$35.00 <span>/ starting</span></div>
+          <ul>
+            <li>Customized Shell / Python 3 automation</li>
+            <li>Third-party API webhook ingestion</li>
+            <li>Full escrow protection &amp; corporate invoicing</li>
+            <li>24-hour turnaround for micro-tasks</li>
+          </ul>
+        </div>
+        <a href="https://www.upwork.com/direct-contracts/your-contract-id" target="_blank" class="btn btn-secondary">
+          Hire via Upwork Direct Contract
+        </a>
+      </div>
+    </div>
+
+    <!-- Crypto Settlement Section -->
+    <div id="crypto" class="crypto-box">
+      <h3>Web3 Direct Settlement (Zero Fee / Non-Reversible)</h3>
+      <p style="font-size: 0.9rem; color: var(--text-muted);">Prefer paying via stablecoin? Transfer USDT directly on-chain. Include your transaction hash (TxID) via email after transfer for instant fulfillment.</p>
+      
+      <div style="margin-top: 1rem;">
+        <label style="font-size: 0.85rem; color: var(--text-bright); font-weight: 600;">USDT (Arbitrum One Network - Recommended, Gas &lt; $0.10):</label>
+        <div class="crypto-address-bar">
+          <span id="arb-addr">0x0000000000000000000000000000000000000000</span>
+          <button class="copy-btn" onclick="copyText('arb-addr')">Copy Address</button>
+        </div>
+      </div>
+
+      <div style="margin-top: 1rem;">
+        <label style="font-size: 0.85rem; color: var(--text-bright); font-weight: 600;">USDT (TRC20 / Tron Network):</label>
+        <div class="crypto-address-bar">
+          <span id="trc-addr">T0000000000000000000000000000000000</span>
+          <button class="copy-btn" onclick="copyText('trc-addr')">Copy Address</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compliance / Audit Required Policies -->
+    <div id="policies" class="policies">
+      <h3>Store Policies &amp; Compliance (Required for Merchant of Record Audit)</h3>
+      
+      <details>
+        <summary>Refund Policy</summary>
+        <p>We stand behind the technical quality of our automation assets. If any script fails to execute on a freshly installed, clean distribution of supported OS environments (Debian 11/12 or Ubuntu 20.04/22.04 LTS) and our technical support cannot resolve the bug within 48 hours, a 100% full refund will be processed within 14 calendar days of purchase. Contact support with your order reference and terminal log output.</p>
+      </details>
+
+      <details>
+        <summary>Terms of Service</summary>
+        <p>By purchasing digital automation packages from DevOps Utils Lab, you are granted a non-exclusive, perpetual license to deploy the code on personal and commercial server infrastructure. Redistribution, sublicensing, or resale of the raw source files is strictly prohibited. All scripts are provided on an "as-is" basis, and users are expected to test in staging environments prior to production rollout.</p>
+      </details>
+
+      <details>
+        <summary>Privacy Policy</summary>
+        <p>We collect only minimal information necessary to deliver digital goods (your email address via our Merchant of Record gateway). We do not store payment card information or banking details on our servers. All transactions are securely processed via Lemon Squeezy (MoR) or public blockchain ledgers. Personal data is never sold or shared with non-essential third parties.</p>
+      </details>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 DevOps Utils Lab. Operated by Independent Infrastructure Developer.</p>
+    <p style="margin-top: 0.3rem;">Payments processed securely by Lemon Squeezy (Merchant of Record) and Upwork Global Inc.</p>
+  </footer>
+
+  <div id="toast">Address copied to clipboard!</div>
+
+  <script>
+    function copyText(elementId) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById("toast");
+        toast.className = "show";
+        setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2200);
+      });
+    }
+  </script>
+</body>
+  </html>
