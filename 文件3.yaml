@@ -1,0 +1,60 @@
+proxies:
+  - name: "SKYBYTE-Argo"
+    type: "vless"
+    server: "39.109.109.90" # 替换为优选的 Cloudflare Anycast IP，直接向该 IP 发起 TCP 连接
+    port: 443
+    uuid: "0a3eaaa5-56b1-40d3-a9c3-784af4d365bf"
+    network: "ws"
+    tls: true
+    servername: "relatively-freelance-citation-bike.trycloudflare.com" # 必须保留原隧道域名，用于 TLS 握手 SNI
+    skip-cert-verify: false
+    ws-opts:
+      path: "/a7eda4a602b21baa213fbe73648d8b4a"
+      headers:
+        Host: "relatively-freelance-citation-bike.trycloudflare.com" # 必须保留原隧道域名，用于 Cloudflare 边缘定位回源
+
+tls:
+  custom-certificates: # 原证书链保留
+    - |
+      -----BEGIN CERTIFICATE-----
+      MIIEMjCCApqgAwIBAgIUChUWNok1UV7tF2Rz+qPoOChsAowwDQYJKoZIhvcNAQEL
+      BQAwGDEWMBQGA1UEAwwNMTYwLjIyLjE2LjE2MDAeFw0yNjExMDkxMzA2MjFaFw0y
+      NzExMDkxMzA2MjFaMBgxFjAUBgNVBAMMDTE2MC4yMi4xNi4xNjAwggGiMA0GCSqG
+      SIb3DQEBAQUAA4IBjwAwggGKAoIBgQDGoxckbVrDjzC8bgjuHlR+SYnmj4HhCLjA
+      V+bZlYwIaIWbzjQJxe9QoYtv4DzqyWookim7XWiWvGDDuM0xtCSq6uEoCtGUQtu0
+      EjxxYsZi6PzOOTEiicXd9Lziv7erHPcsEiXTcCTvjF/iQbsdR2rwAOo2fkNtagc+
+      8KtipXEbqn3MGkN7vkySSKRK8snGNuIaNPLvYMAhCG5Xv9nvAx84GHc0vnIozi62
+      3apDU1cvvMbN4VZeqA7IiMoei5vxTKoL/ykzLlGc4rzQfP/a5qXhMevIHUU9PM5B
+      xR+xH4qrjauq/e0DgYStT/prQKXaljc8Rms8bWHSnkxd8I1uzJOWVM4p/LSkpBzB
+      MIVp67Axwp/Uxnq+z/NkoxgW6atvwhMvJxiHdKFhR6aX99GWDe8cwpage9zK4ND4
+      7SIQMH5Sz1PZaErrHvatRSRQmNULNrWTVSTE6rtjaWbl8Q6PaEZ6lR9XiaUb3cSE
+      4bZg7yaHcktVk+yo6mVXm5b0ruLaXz8CAwEAAaN0MHIwHQYDVR0OBBYEFJ2jMVsa
+      ByOVx+wvXbpCuEsICkbJMB8GA1UdIwQYMBaAFJ2jMVsaByOVx+wvXbpCuEsICkbJ
+      MA8GA1UdEQQIMAaHBKAWEKAwDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMC
+      AqQwDQYJKoZIhvcNAQELBQADggGBAGIQWwS0Aag0GOoKNmAKhS8RIFjGcflKMSn7
+      J7lawMFr7Q2QekEF7MCQ2Iz97Gp/Hmv5ZDHvBgorhCp2nXM74J+0ycJU2ivdjKq2
+      NX0Gn/RtzOgHQ37R94cIuyoomyxQrkt1bw6ElQgbE89I5+RBnoAdnRiANARsnCRv
+      uu95e4BmHE+UVPJv+CxbyxPMn5quFcfsIw54y/1e9FJpG/QWWBknXOJmEx7mJcoL
+      r4cW7B/G7b6d/VFnKwl76ac6zQcCWIEqKcCiYBToq8T3paEl2bLGseKnlXNvPpri
+      D5QiQ6QOTp9w5tydeRufgqY4BE7FU882Re41YhhFtrnA6ZwExGnq6cpTj+00ctOj
+      CnT2v6Z8EjNCLxma6lxHWFZTIzR83ETJvZh7eViIDDPwu2QotRxpp+5vdmNkPqzl
+      HQEMwutOfhq/0KFPiULP12a5m6O2ekgY5Knjn0HWpcJgVJ4WtZkCjxBqluKk5C32
+      4jEIw9SZjNuugAIdiClCClbh/Z5puQ==
+      -----END CERTIFICATE-----
+
+mixed-port: 7890
+allow-lan: false
+mode: "rule"
+
+proxy-groups:
+  - name: "SKYBYTE"
+    type: "select"
+    proxies:
+      - "SKYBYTE-Argo"
+
+rules:
+  - GEOIP,LAN,DIRECT
+  - GEOSITE,cn,DIRECT
+  - DOMAIN-SUFFIX,cn,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,SKYBYTE
